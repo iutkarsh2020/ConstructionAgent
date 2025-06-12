@@ -36,6 +36,8 @@ async def create_graph():
         return {'messages': [HumanMessage(content=user_query)]}
     
     def agent_call(state: MessagesState):
+        # summary will help reducing token count
+        return {'messages': llm_with_tools.invoke([sys_prompt] + state['summary'] + state['messages'])}
         
     builder = StateGraph(MessagesState)
 
