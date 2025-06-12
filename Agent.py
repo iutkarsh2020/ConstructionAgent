@@ -8,11 +8,13 @@ from typing import Annotated, TypedDict
 from langgraph.graph import StateGraph, START, END
 from langgraph.graph.message import add_messages
 from langgraph.prebuilt import tools_condition, ToolNode
+from langgraph.checkpoint.memory import MemorySaver
+
 load_dotenv()
 
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 class MessagesState(TypedDict):
-    messages: Annotated[list[str], add_messages],
+    messages: Annotated[list[str], add_messages]
     summary: str
 
 async def create_graph():
@@ -49,3 +51,8 @@ async def create_graph():
     builder.add_edge('Human', 'Agent')
     builder.add_conditional_edges('Agent', tools_condition)
     builder.add_edge('tools', 'Human')
+
+    memory = MemorySaver()
+    graph = builder.compile(checkpointer=memory)
+
+    return graph
