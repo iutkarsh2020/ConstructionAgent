@@ -47,3 +47,6 @@ async def query_pipe_info(location):
     }
 
     return pipe_information 
+
+if __name__ == '__main__':
+    mcp.run(transport='stdio')

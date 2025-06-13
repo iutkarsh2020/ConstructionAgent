@@ -7,33 +7,38 @@ from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from langgraph.graph import StateGraph, START, END
 from langgraph.prebuilt import tools_condition, ToolNode
 from langgraph.checkpoint.memory import MemorySaver
+from pathlib import Path
 
-from state import MessagesState
+from agent.state import MessagesState
 
 load_dotenv()
 
 GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
 
+# Get the project root directory
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+
 async def create_graph():
     client = MultiServerMCPClient({
         "tools_server": {
-            "command": "uv",
-            "args": ["run", "src/server/tools.py"],
+            "command": "python",
+            "args": [str(PROJECT_ROOT / "src" / "server" / "tools.py")],
             "transport": "stdio"
         },
         "prompt_server": {
-            "command": "uv",
-            "args": ["run", "src/server/prompts.py"],
+            "command": "python",
+            "args": [str(PROJECT_ROOT / "src" / "server" / "prompts.py")],
             "transport": "stdio"
         }
     })
     llm = ChatGoogleGenerativeAI(model = 'gemini-2.0-flash', temperature=0, google_api_key = GOOGLE_API_KEY)
     tools = await client.get_tools(server_name="tools_server")
 
+    tool_descriptions = Helper.get_tool_descriptions(tools)
     llm_with_tools = llm.bind_tools(tools)
     
     sys_prompt = SystemMessage(str(await client.get_prompt(server_name="prompt_server", prompt_name="system_prompt")))
-    
+    query_validation_prompt = await client.get_prompt(server_name="prompt_server", prompt_name="query_validation_prompt")
     def intent_and_slot_validator(state: MessagesState):
         user_query = input('Enter your query: ')
         return {'messages': [HumanMessage(content=user_query)]}
@@ -48,12 +53,12 @@ async def create_graph():
     builder.add_node('Agent', agent_call)
     builder.add_node('tools', ToolNode(tools))
     # LOGIC
-    builder.add_edge(START, 'Human')
-    builder.add_edge('Human', 'Agent')
+    builder.add_edge(START, 'Query Validator')
+    builder.add_edge('Query Validator', 'Agent')
     builder.add_conditional_edges('Agent', tools_condition)
-    builder.add_edge('tools', 'Human')
+    builder.add_edge('tools', 'Query Validator')
 
     memory = MemorySaver()
     graph = builder.compile(checkpointer=memory)
 
-    return graph 
+    return (graph, tools, [sys_prompt, query_validation_prompt])
