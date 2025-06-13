@@ -61,6 +61,17 @@ Respond in this exact JSON format, do not reply to conversation in any other for
 }}
 '''
 
+@mcp.prompt()
+async def clarification_prompt():
+    return """
+            You're a helpful assistant. A user query was mapped to one or more tool calls, but some tools couldn't be used due to missing arguments.
+            Your job is to:
+            1. Read the JSON list of ambiguous tool intents.
+            2. For each, clearly explain what is missing.
+            3. Then ask the user nicely to provide that missing information.
+            Respond as a friendly assistant — not in JSON — just plain language.
+        """
+
 
 if __name__ == '__main__':
     mcp.run(transport='stdio')
