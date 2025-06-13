@@ -128,7 +128,7 @@ class AgentGraph:
         validation_sys_message = SystemMessage(
             content=self.prompts['query_validation_prompt'][0].content.format(tool_descriptions=tool_descriptions)
         )
-        result = await self.llm_with_tools.ainvoke([validation_sys_message, user_query])
+        result = await self.llm_with_tools.ainvoke([validation_sys_message] + state['messages'])
         return {'messages': [result]}
 
     async def agent_call(self, state: MessagesState):
@@ -162,11 +162,7 @@ class AgentGraph:
             return {'messages': [AIMessage(content="Some error occurred. Please try again.")]}
         to_return = {}
         if query.get("unrelated", 'true'):
-            to_return = {
-                "messages": [
-                    AIMessage(content="Sorry, the query seems unfamiliar. I am a construction assistant and I can only help with construction related tasks.")
-                ]
-            }
+            to_return = {"messages": [AIMessage(content="Sorry, the query seems unfamiliar. I am a construction assistant and I can only help with construction related tasks.")]}
         else: 
             intents = query.get("intents", [])
             ambiguous_intents = [intent for intent in intents if intent["is_ambiguous"]]
@@ -175,9 +171,7 @@ class AgentGraph:
                 clarification_prompt = SystemMessage(content=self.prompts['clarification_prompt'][0].content)
                 human_message = HumanMessage(content=json.dumps(ambiguous_intents, indent=2))
                 clarification_response = await self.llm_with_tools.ainvoke([clarification_prompt, human_message])
-                to_return = {
-                    "messages": [clarification_response]
-                }
+                to_return = {"messages": [clarification_response]}
             else:
                 # Execute tools for clear intents
                 tool_calls = [
@@ -189,10 +183,7 @@ class AgentGraph:
                     for intent in intents
                 ]
                 # Tool_calls for clear intents
-                to_return = {'messages':[AIMessage(
-                    content="",
-                    tool_calls=tool_calls
-                )]}
+                to_return = {'messages':[AIMessage(content="", tool_calls=tool_calls)]}
         return to_return
 
     async def build_graph(self):
