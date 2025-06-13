@@ -10,3 +10,9 @@ MCP_CLIENT_CONFIG = {
         "transport": "stdio"
     }
 }
+
+REQUIRED_PROMPT_NAMES = {
+    "system_prompt": "system_prompt",
+    "query_validation_prompt": "query_validation_prompt",
+    "clarification_prompt": "clarification_prompt"
+}

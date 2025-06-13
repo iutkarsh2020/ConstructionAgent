@@ -9,7 +9,8 @@ class MCPLayer:
         self.prompts = {}
 
     async def fetch_tools(self):
-        self.tools = await self.client.get_tools()
+        if not self.tools:
+            self.tools = await self.client.get_tools()
         return self.tools
 
     async def fetch_prompt(self, prompt_name: str, server_name: str = "prompt_server"):
@@ -18,9 +19,10 @@ class MCPLayer:
         return prompt
 
     async def fetch_prompts(self, prompt_names: list[str], server_name: str = "prompt_server"):
-        for name in prompt_names:
-            prompt = await self.fetch_prompt(name, server_name=server_name)
-            self.prompts[name] = prompt
+        if not self.prompts:
+            for name in prompt_names:
+                prompt = await self.fetch_prompt(name, server_name=server_name)
+                self.prompts[name] = prompt
         return self.prompts
 
     def get_tool(self, name: str):
