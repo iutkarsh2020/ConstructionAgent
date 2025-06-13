@@ -1,9 +1,7 @@
 import asyncio
-from src.agent.core import create_graph
-
+from src.run import run
 async def main():
-    graph = await create_graph()
-    return graph
+    await run()
 
 if __name__ == "__main__":
     asyncio.run(main())
