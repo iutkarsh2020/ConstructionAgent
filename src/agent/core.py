@@ -34,9 +34,7 @@ async def create_graph():
     llm = ChatGoogleGenerativeAI(model = 'gemini-2.0-flash', temperature=0, google_api_key = GOOGLE_API_KEY)
     tools = await client.get_tools(server_name="tools_server")
 
-    for tool in tools:
-        print(tool)
-        print("--------------------------------")
+    tool_descriptions = Helper.get_tool_descriptions(tools)
     llm_with_tools = llm.bind_tools(tools)
     
     sys_prompt = SystemMessage(str(await client.get_prompt(server_name="prompt_server", prompt_name="system_prompt")))
