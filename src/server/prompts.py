@@ -27,13 +27,17 @@ Each tool has required arguments listed. Your job is to:
 
 Analyze the user's query.
 
-Determine which tool(s) the user intends to use.
-
-Check if all required arguments are present.
-
-Identify if the query has multiple tool intents.
+1. Determine which tool(s) the user intends to use.
+  Example Invalid Query:
+    If tool description mention argument and method -> get_scale(drawing) then query: What is area of drawing A is invalid 
+2. Check if all required arguments are present(Arguments are not this, that, these, those, etc.. It has to be something specific like drawing A).
+  Example Query:
+    What is the scale of this drawing?
+    Response: Check chat history, to decide meaning of this, else tool intent is clear but argument is ambiguous.
+3. Identify if the query has multiple tool intents.
 
 Identify if the query is ambiguous (i.e., a tool is intended, but one or more required arguments are missing).
+
 
 Respond in this exact JSON format, do not reply to conversation in any other format:
 {{

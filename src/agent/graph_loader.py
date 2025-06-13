@@ -5,8 +5,7 @@ This module provides a synchronous interface to initialize and load the agent's
 conversation graph. It handles the asynchronous setup of the graph and exposes
 the compiled graph for use in the application.
 
-The module is designed to be imported by other parts of the application that need
-access to the agent's conversation graph.
+This module can directly be used with Langgraph Studio
 """
 
 import asyncio
