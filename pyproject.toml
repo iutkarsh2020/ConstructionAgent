@@ -1,9 +1,40 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "constructionagent"
 version = "0.1.0"
-description = "Add your description here"
+description = "A LangGraph agent for construction drawing related queries and tasks."
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = [
-    "mcp[cli]>=1.9.4",
+keywords = ["langgraph", "agent", "llm", "ai", "construction"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", 
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
+dependencies = [
+    # Core LangChain/LangGraph dependencies
+    "langgraph>=0.0.30",
+    "langchain-core",
+
+    "langchain-google-genai",
+
+    "python-dotenv", # For 'dotenv' import
+
+    "langchain-community", 
+
+    "langchain-mcp-adapters",
+
+    "fastmcp",
+    "mcp[cli]>=1.9.4",
+    "langgraph-cli[inmem]"
+]
+
+[tool.setuptools.packages.find]
+where = ["."] # will tell to start looking for packages from root directory
+include = ["constructionagent*"]

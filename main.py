@@ -1,5 +1,5 @@
 import asyncio
-from src.run import run
+from constructionagent.run import run
 async def main():
     await run()
 
