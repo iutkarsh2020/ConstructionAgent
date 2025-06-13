@@ -12,5 +12,5 @@ Supported Tools:
 TO RUN THE AGENT ON LANGGRAPH STUDIO(local):
 1) In the root directory, create a new VM - USE: uv venv
 2) Activate newly creatd VM - USE: source ./venv/bin/activate
-3) Install all dependencies from pyproject.toml - USE python install .
+3) Install all dependencies from pyproject.toml - USE uv pip install .
 4) Run Langgraph studio in local - USE: langgraph dev --config langgraph.json

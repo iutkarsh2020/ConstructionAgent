@@ -8,7 +8,7 @@ async def run():
     graph = agent_graph.graph
 
     thread_config = {'configurable': {'thread_id': '1'}}
-    result = await graph.ainvoke({'messages':[HumanMessage(content="What is area of drawing A?")]}, config=thread_config)
+    result = await graph.ainvoke({'messages':[HumanMessage(content="What is the area of region A and scale of drawing B?")]}, config=thread_config)
     print(result)
 
 
