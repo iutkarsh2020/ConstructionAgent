@@ -1,6 +1,6 @@
 {
     "graphs": {
-      "construction_graph": "src.agent.graph_loader:graph"
+      "construction_graph": "constructionagent.agent.graph_loader:graph"
     },
     "dependencies": {
       "langgraph": "^0.4.8",

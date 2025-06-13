@@ -10,7 +10,7 @@ the tools and prompts used by the construction agent. It handles:
 
 import asyncio
 from langchain_mcp_adapters.client import MultiServerMCPClient
-from src.agent.mcp_config import MCP_CLIENT_CONFIG
+from constructionagent.agent.mcp_config import MCP_CLIENT_CONFIG
 
 class MCPLayer:
     """

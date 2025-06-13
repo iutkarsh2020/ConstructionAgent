@@ -12,12 +12,12 @@ MCP_CLIENT_CONFIG = {
     # Configuration for the tools server
     "tools_server": {
         "command": "uv",
-        "args": ["run", "src/server/tools.py"],
+        "args": ["run", "constructionagent/server/tools.py"],
         "transport": "stdio"
     },
     "prompt_server": {
         "command": "uv",
-        "args": ["run", "src/server/prompts.py"],
+        "args": ["run", "constructionagent/server/prompts.py"],
         "transport": "stdio"
     }
 }

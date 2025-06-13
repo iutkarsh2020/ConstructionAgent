@@ -9,7 +9,7 @@ This module can directly be used with Langgraph Studio
 """
 
 import asyncio
-from src.agent.core import AgentGraph
+from constructionagent.agent.core import AgentGraph
 
 _agent_instance = AgentGraph()
 
