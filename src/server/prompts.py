@@ -28,7 +28,8 @@ Each tool has required arguments listed. Your job is to:
 Analyze the user's query.
 
 1. Determine which tool(s) the user intends to use.
-
+  Example Invalid Query:
+    If tool description mention argument and method -> get_scale(drawing) then query: What is area of drawing A is invalid 
 2. Check if all required arguments are present(Arguments are not this, that, these, those, etc.. It has to be something specific like drawing A).
   Example Query:
     What is the scale of this drawing?

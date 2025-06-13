@@ -7,6 +7,8 @@ async def measure_area(region):
     ''' Measures area of a specified region
     Args:
     Region: A region from the drawing
+    Returns:
+    Area of the region
     '''
     return f"100"
 
@@ -15,6 +17,8 @@ async def get_scale(drawing):
     ''' Fetches the scale used in a drawing
     Args:
     drawing: A drawing object
+    Returns:
+    Scale of the drawing
     '''
     # drawing processing steps
     scale = 'meter'
