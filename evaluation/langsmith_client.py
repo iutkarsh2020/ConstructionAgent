@@ -8,7 +8,9 @@ to create datasets and examples for agent evaluation.
 import logging
 from typing import List, Dict, Any, Optional
 from langsmith import Client
-
+from dotenv import load_dotenv
+from dataset_generator import DatasetGenerator
+from langchain_core.messages import HumanMessage
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -29,7 +31,7 @@ class LangSmithDatasetManager:
     
     def create_dataset(self, 
                       dataset_name: str, 
-                      description: str = "Dataset for Construction Agent evaluation") -> str:
+                      description: str = "Dataset for Construction Agent evaluation"):
         """
         Create a new dataset in LangSmith.
         
@@ -52,7 +54,7 @@ class LangSmithDatasetManager:
             )
             
             logger.info(f"Dataset created successfully with ID: {dataset.id}")
-            return dataset.id
+            return dataset
             
         except Exception as e:
             logger.error(f"Error creating dataset '{dataset_name}': {e}")
@@ -89,10 +91,25 @@ class LangSmithDatasetManager:
             
             logger.info(f"Adding {len(questions)} examples to dataset: {dataset_id}")
             
-            # Create examples
+            # Create examples with the correct format
+            # Each example should be a single dictionary with 'messages' key containing HumanMessage objects
+            examples = []
+            for question, answer in zip(questions, answers):
+                example = {
+                    "messages": [HumanMessage(content=question)],
+                    "Answer": answer
+                }
+                examples.append(example)
+            
+            # Create examples in LangSmith with the correct format
+            # Each input should be: {'messages': [HumanMessage(content=question)]}
+            # Each output should be: {'Answer': answer}
+            inputs = [{"messages": [HumanMessage(content=q)]} for q in questions]
+            outputs = [{"Answer": a} for a in answers]
+            
             self.client.create_examples(
-                inputs=[{"Question": q} for q in questions],
-                outputs=[{"Answer": a} for a in answers],
+                inputs=inputs,
+                outputs=outputs,
                 dataset_id=dataset_id
             )
             
@@ -107,53 +124,12 @@ class LangSmithDatasetManager:
             raise Exception(f"Failed to add examples to dataset: {e}")
 
 
-def main():
-    """Main function to demonstrate usage of the LangSmithDatasetManager class."""
-    try:
-        print("=== LangSmith Dataset Manager Demo ===\n")
-        
-        # Initialize the manager
-        manager = LangSmithDatasetManager()
-        
-        # Sample data (you can replace this with your actual data)
-        sample_questions = [
-            "How many square meters is Room A?",
-            "What's the area of the corridor in this plan?",
-            "Can you tell me the scale of Drawing 101?"
-        ]
-        
-        sample_answers = [
-            "clear_tool_call_measure_area",
-            "clear_tool_call_measure_area",
-            "clear_tool_call_get_scale"
-        ]
-        
-        # Create dataset
-        dataset_id = manager.create_dataset(
-            dataset_name="intent_classification_dataset",
-            description="Dataset to evaluate Construction Agent's intent classification"
-        )
-        
-        print(f"Dataset created with ID: {dataset_id}")
-        
-        # Add examples to dataset
-        success = manager.add_examples_to_dataset(
-            dataset_id=dataset_id,
-            questions=sample_questions,
-            answers=sample_answers
-        )
-        
-        if success:
-            print(f"Successfully added {len(sample_questions)} examples to dataset")
-        else:
-            print("Failed to add examples to dataset")
-        
-        return dataset_id
-        
-    except Exception as e:
-        logger.error(f"Error in main execution: {e}")
-        raise
+
+load_dotenv() 
+ls = LangSmithDatasetManager()
+s = DatasetGenerator("config/evaluation_data.yaml")
+ls_dataset = ls.create_dataset(s.dataset_config.name, s.dataset_config.description)
+ls.add_examples_to_dataset(ls_dataset.id, s.dataset_config.inputs, s.dataset_config.expected_outputs)
 
 
-if __name__ == "__main__":
-    main() 
+

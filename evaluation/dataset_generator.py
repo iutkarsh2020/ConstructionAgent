@@ -28,7 +28,6 @@ class DatasetConfig:
     created_date: str
     inputs: List[str]
     expected_outputs: List[str]
-    intent_categories: Dict[str, List[str]]
     output_settings: Dict[str, Any]
 
 class DatasetGenerator:
@@ -90,6 +89,43 @@ class DatasetGenerator:
             logger.error(f"Unexpected error loading configuration: {e}")
             raise
     
+    def _parse_config(self) -> DatasetConfig:
+        """
+        Parse configuration into a structured data class.
+        
+        Returns:
+            DatasetConfig object containing parsed configuration
+            
+        Raises:
+            KeyError: If required configuration keys are missing
+            ValueError: If configuration data is invalid
+        """
+        try:
+            # Validate data consistency
+            inputs = self.config['inputs']
+            expected_outputs = self.config['expected_outputs']
+            
+            if len(inputs) != len(expected_outputs):
+                raise ValueError(
+                    f"Mismatch between inputs ({len(inputs)}) and expected_outputs ({len(expected_outputs)})"
+                )
+            
+            return DatasetConfig(
+                name=self.config['dataset']['name'],
+                description=self.config['dataset']['description'],
+                version=self.config['dataset']['version'],
+                created_date=self.config['dataset']['created_date'],
+                inputs=inputs,
+                expected_outputs=expected_outputs,
+                output_settings=self.config['output']
+            )
+            
+        except KeyError as e:
+            logger.error(f"Configuration parsing error: {e}")
+            raise
+        except Exception as e:
+            logger.error(f"Unexpected error parsing configuration: {e}")
+            raise
     
     def generate_dataframe(self) -> pd.DataFrame:
         """
@@ -154,3 +190,8 @@ class DatasetGenerator:
         except Exception as e:
             logger.error(f"Error saving CSV file: {e}")
             raise OSError(f"Failed to save CSV file: {e}")
+    
+d = DatasetGenerator('config/tool_invocation_evaluation.yaml')
+df = d.generate_dataframe()
+d.save_to_csv(df, 'tool_invocation_evaluation.csv')
+print(df)
