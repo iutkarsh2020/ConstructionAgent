@@ -1,5 +1,5 @@
 """
-Model Control Panel (MCP) Layer for managing tools and prompts.
+Model Context Protocol (MCP) Layer for managing tools and prompts.
 
 This module provides an interface to interact with the MCP server, which manages
 the tools and prompts used by the construction agent. It handles:
