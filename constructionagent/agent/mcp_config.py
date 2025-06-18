@@ -1,5 +1,5 @@
 """
-Configuration settings for the Model Control Panel (MCP) client.
+Configuration settings for the Model Context Protocol (MCP) client.
 
 This module defines the configuration constants used by the MCP client to connect
 to and interact with the tools and prompts servers. It includes:
