@@ -41,11 +41,11 @@ Identify if the query is ambiguous (i.e., a tool is intended, but one or more re
 
 Respond in this exact JSON format, do not reply to conversation in any other format:
 {{
-  "unrelated": true | false (True if the query is totally unrelated to the tools you can use)
+  "unrelated": true | false (True if the query is totally unrelated to the tools you can use(read user query, make sure you consider synonymns for drawings, areas, pipe details to decide))
   "intents": [
     {{
       "tool": "tool_name",
-      "is_ambiguous": true | false,
+      "is_ambiguous": true | false, (Tool intent is clear but the required argument is ambiguous)
       "ambiguous_reason": "reason for ambiguity"
       "arguments": {{
         "arg1": "value or null"

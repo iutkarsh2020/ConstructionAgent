@@ -1,0 +1,95 @@
+# Evaluation Dataset Configuration for Construction Agent
+# This file contains the input queries and expected outputs for evaluation
+
+dataset:
+  name: "agent_intent_evaluation"
+  description: "High-level intent classification evaluation dataset for construction agent"
+  version: "1.0.0"
+  created_date: "2024-01-01"
+
+# Input queries for the AI agent
+inputs:
+  - "How many square meters is Room A?"
+  - "What's the area of the corridor in this plan?"
+  - "Can you tell me the scale of Drawing 101?"
+  - "Is this floor plan in 1:100 or something else?"
+  - "Give me pipe details near the west wall."
+  - "What's the material and diameter of the pipe at point B?"
+  - "What's the scale and the area of Room 101?"
+  - "What's the pipe length and the scale under it?"
+  - "How big is the pipe?"
+  - "Can you measure this?"
+  - "Tell me everything about this location."
+  - "Hello?"
+  - "What is the size of region 5?"
+  - "Where is the pipe connected in zone C?"
+  - "What's the zoom level of this blueprint?"
+  - "Show me the area of the main lobby."
+  - "Scale of plan D-205 please."
+  - "Info on water lines at 10,20 on Floor 3."
+  - "What is the scale?"
+  - "Area of Room 202 and pipe details at (50, 60)."
+  - "What about pipes?"
+  - "Who is the current Prime Minister?"
+  - "Calculate the area of the breakroom."
+  - "Give me the scale of that drawing."
+  - "What are the properties of the pipe near the entrance?"
+  - "How do I set up a server?"
+  - "I need the area of the cafeteria and the scale of this document."
+  - "What's the elevation here?"
+  - "Show me pipe info at (100, 150, 10)."
+  - "Can you help me understand construction permits?"
+
+# Expected output intent classifications
+expected_outputs:
+  - "clear_tool_call_measure_area"
+  - "clear_tool_call_measure_area"
+  - "clear_tool_call_get_scale"
+  - "ambiguous_tool_intent"
+  - "clear_tool_call_query_pipe_info"
+  - "clear_tool_call_query_pipe_info"
+  - "multiple_tool_intents_with_ambiguity"
+  - "multiple_tool_intents_with_ambiguity"
+  - "ambiguous_tool_intent"
+  - "ambiguous_tool_intent"
+  - "ambiguous_tool_intent"
+  - "unrelated_query"
+  - "clear_tool_call_measure_area"
+  - "clear_tool_call_query_pipe_info"
+  - "ambiguous_tool_intent"
+  - "clear_tool_call_measure_area"
+  - "clear_tool_call_get_scale"
+  - "clear_tool_call_query_pipe_info"
+  - "ambiguous_tool_intent"
+  - "multiple_tool_intents_all_clear"
+  - "ambiguous_tool_intent"
+  - "unrelated_query"
+  - "clear_tool_call_measure_area"
+  - "ambiguous_tool_intent"
+  - "ambiguous_tool_intent"
+  - "unrelated_query"
+  - "multiple_tool_intents_with_ambiguity"
+  - "unrelated_query"
+  - "clear_tool_call_query_pipe_info"
+  - "unrelated_query"
+
+# Intent categories for analysis
+intent_categories:
+  clear_tool_calls:
+    - "clear_tool_call_measure_area"
+    - "clear_tool_call_get_scale"
+    - "clear_tool_call_query_pipe_info"
+  ambiguous_intents:
+    - "ambiguous_tool_intent"
+  multiple_intents:
+    - "multiple_tool_intents_with_ambiguity"
+    - "multiple_tool_intents_all_clear"
+  unrelated_queries:
+    - "unrelated_query"
+
+# Output settings
+output:
+  csv_filename: "agent_intent_eval_high_level_ground_truth.csv"
+  json_filename: "agent_intent_eval_high_level_ground_truth.json"
+  include_timestamp: true
+  output_directory: "evaluation/datasets" 
