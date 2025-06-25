@@ -47,5 +47,22 @@ Capabilities:
 - Gather human feedback
 - Perform version comparisons
 ### Cons
-Paid service
-Needs manual creation of test datasets
+- Paid service
+- Needs manual creation of test datasets
+
+### Google Vertex AI Gen AI Evaluation Service:
+### Pros
+- Support for both final response and trajectory evaluation with six built-in
+- metrics (exact match, in-order/any-order, precision, recall, single‑tool use).
+- Support for Langgraph agent with additional Vertex AI engine integration.
+- Custom metrics via python functions.
+
+### Cons
+- Requires google cloud setup with Vertex AI Agent Engine.
+- Agent evaluation service and scale features are still in public preview with
+limited support.
+
+<img width="367" alt="image" src="https://github.com/user-attachments/assets/3bb90ba0-0d67-4048-89d0-0c03aadb8ea9" />
+
+<img width="373" alt="image" src="https://github.com/user-attachments/assets/6d689bc2-69b6-448b-9425-bfdcf841a4f5" />
+
