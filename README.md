@@ -62,7 +62,7 @@ Capabilities:
 - Agent evaluation service and scale features are still in public preview with
 limited support.
 
-<img width="367" alt="image" src="https://github.com/user-attachments/assets/3bb90ba0-0d67-4048-89d0-0c03aadb8ea9" />
+<img width="367" alt="image" src="https://github.com/user-attachments/assets/3bb90ba0-0d67-4048-89d0-0c03aadb8ea9" /> \
 
 <img width="373" alt="image" src="https://github.com/user-attachments/assets/6d689bc2-69b6-448b-9425-bfdcf841a4f5" />
 
