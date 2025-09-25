@@ -34,8 +34,7 @@ import random
 from constructionagent.agent.mcp_config import REQUIRED_PROMPT_NAMES
 
 load_dotenv()
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-GOOGLE_GENAI_MODEL = os.getenv("GOOGLE_GENAI_MODEL", "gemini-pro")
+
 
 class AgentGraph:
     """
